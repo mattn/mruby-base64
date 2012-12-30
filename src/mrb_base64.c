@@ -1,5 +1,6 @@
 #include <mruby.h>
 #include <mruby/string.h>
+#include <string.h>
 #include <strings.h>
 #include <ctype.h>
 
