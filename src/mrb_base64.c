@@ -1,7 +1,9 @@
 #include <mruby.h>
 #include <mruby/string.h>
 #include <string.h>
+#ifndef _MSC_VER
 #include <strings.h>
+#endif
 #include <ctype.h>
 
 const char* base64_chars = 
@@ -105,10 +107,12 @@ static mrb_value
 mrb_base64_encode(mrb_state *mrb, mrb_value self)
 {
   mrb_value arg = mrb_nil_value();
+  unsigned char* p;
+  mrb_value str;
 
   mrb_get_args(mrb, "S", &arg);
-  unsigned char* p = base64_encode((unsigned char*) RSTRING_PTR(arg), RSTRING_LEN(arg));
-  mrb_value str = mrb_str_new_cstr(mrb, (char*) p);
+  p = base64_encode((unsigned char*) RSTRING_PTR(arg), RSTRING_LEN(arg));
+  str = mrb_str_new_cstr(mrb, (char*) p);
   free(p);
   return str;
 }
@@ -117,10 +121,12 @@ static mrb_value
 mrb_base64_decode(mrb_state *mrb, mrb_value self)
 {
   mrb_value arg = mrb_nil_value();
+  unsigned char* p;
+  mrb_value str;
 
   mrb_get_args(mrb, "S", &arg);
-  unsigned char* p = base64_decode((unsigned char*) RSTRING_PTR(arg), RSTRING_LEN(arg));
-  mrb_value str = mrb_str_new_cstr(mrb, (char*) p);
+  p = base64_decode((unsigned char*) RSTRING_PTR(arg), RSTRING_LEN(arg));
+  str = mrb_str_new_cstr(mrb, (char*) p);
   free(p);
   return str;
 }
