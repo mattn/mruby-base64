@@ -1,5 +1,6 @@
 #include <mruby.h>
 #include <mruby/string.h>
+#include <stdlib.h>
 #include <string.h>
 #ifndef _MSC_VER
 #include <strings.h>
