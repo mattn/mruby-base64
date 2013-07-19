@@ -17,7 +17,7 @@ const char* base64_chars =
     ((unsigned char)c == '/'))
 
 unsigned char*
-base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
+base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len, unsigned int *out_len) {
   int i = 0;
   int j = 0;
   unsigned char char_array_3[3] = {0};
@@ -25,6 +25,7 @@ base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
 
   unsigned char* p = malloc(in_len * 3 + 1);
   unsigned char* top = p;
+  *out_len = 0;
   while (in_len--) {
     char_array_3[i++] = *(bytes_to_encode++);
     if (i == 3) {
@@ -55,12 +56,13 @@ base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
       *p++ = '=';
   }
   *p = 0;
+  *out_len = p - top;
 
   return top;
 }
 
 unsigned char*
-base64_decode(unsigned char const* bytes_to_decode, unsigned int in_len) {
+base64_decode(unsigned char const* bytes_to_decode, unsigned int in_len, unsigned int *out_len) {
   int i = 0;
   int j = 0;
   int in_ = 0;
@@ -69,6 +71,7 @@ base64_decode(unsigned char const* bytes_to_decode, unsigned int in_len) {
 
   unsigned char* p = malloc(in_len * 3 + 1);
   unsigned char* top = p;
+  *out_len = 0;
   while (in_len-- && ( bytes_to_decode[in_] != '=') && is_base64(bytes_to_decode[in_])) {
     char_array_4[i++] = bytes_to_decode[in_]; in_++;
     if (i ==4) {
@@ -100,6 +103,7 @@ base64_decode(unsigned char const* bytes_to_decode, unsigned int in_len) {
       *p++ = char_array_3[j];
   }
   *p = 0;
+  *out_len = p - top;
 
   return top;
 }
@@ -109,11 +113,12 @@ mrb_base64_encode(mrb_state *mrb, mrb_value self)
 {
   mrb_value arg = mrb_nil_value();
   unsigned char* p;
+  unsigned int len = 0;
   mrb_value str;
 
   mrb_get_args(mrb, "S", &arg);
-  p = base64_encode((unsigned char*) RSTRING_PTR(arg), RSTRING_LEN(arg));
-  str = mrb_str_new_cstr(mrb, (char*) p);
+  p = base64_encode((unsigned char*) RSTRING_PTR(arg), RSTRING_LEN(arg), &len);
+  str = mrb_str_new(mrb, (char*) p, (size_t) len);
   free(p);
   return str;
 }
@@ -123,11 +128,12 @@ mrb_base64_decode(mrb_state *mrb, mrb_value self)
 {
   mrb_value arg = mrb_nil_value();
   unsigned char* p;
+  unsigned int len = 0;
   mrb_value str;
 
   mrb_get_args(mrb, "S", &arg);
-  p = base64_decode((unsigned char*) RSTRING_PTR(arg), RSTRING_LEN(arg));
-  str = mrb_str_new_cstr(mrb, (char*) p);
+  p = base64_decode((unsigned char*) RSTRING_PTR(arg), RSTRING_LEN(arg), &len);
+  str = mrb_str_new(mrb, (char*) p, (size_t) len);
   free(p);
   return str;
 }
