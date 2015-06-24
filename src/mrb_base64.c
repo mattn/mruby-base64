@@ -141,8 +141,8 @@ mrb_base64_decode(mrb_state *mrb, mrb_value self)
 void
 mrb_mruby_base64_gem_init(mrb_state* mrb) {
   struct RClass* _class_base64 = mrb_define_module(mrb, "Base64");
-  mrb_define_class_method(mrb, _class_base64, "encode", mrb_base64_encode, ARGS_REQ(1));
-  mrb_define_class_method(mrb, _class_base64, "decode", mrb_base64_decode, ARGS_REQ(1));
+  mrb_define_class_method(mrb, _class_base64, "encode", mrb_base64_encode, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, _class_base64, "decode", mrb_base64_decode, MRB_ARGS_REQ(1));
 }
 
 void
