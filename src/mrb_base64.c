@@ -16,6 +16,10 @@ const char* base64_chars =
     ((unsigned char)c == '+') || \
     ((unsigned char)c == '/'))
 
+#define is_newline(c) ( \
+    ((unsigned char)c == '\n') || \
+    ((unsigned char)c == '\r'))
+
 unsigned char*
 base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len, unsigned int *out_len) {
   int i = 0;
@@ -72,8 +76,10 @@ base64_decode(unsigned char const* bytes_to_decode, unsigned int in_len, unsigne
   unsigned char* p = malloc(in_len * 3 + 1);
   unsigned char* top = p;
   *out_len = 0;
-  while (in_len-- && ( bytes_to_decode[in_] != '=') && is_base64(bytes_to_decode[in_])) {
-    char_array_4[i++] = bytes_to_decode[in_]; in_++;
+  while (in_len-- && ( bytes_to_decode[in_] != '=') && (is_base64(bytes_to_decode[in_]) || is_newline(bytes_to_decode[in_]))) {
+    if (!is_newline(bytes_to_decode[in_]))
+      char_array_4[i++] = bytes_to_decode[in_];
+    in_++;
     if (i ==4) {
       for (i = 0; i <4; i++)
         char_array_4[i] = strchr(base64_chars, char_array_4[i]) - base64_chars;
