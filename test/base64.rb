@@ -1,12 +1,12 @@
 
 assert('Base64 encode "ruby"') do
-  Base64::encode('ruby') == 'cnVieQ=='
+  assert_equal 'cnVieQ==', Base64::encode('ruby')
 end
 
 assert('Base64 decode for old example') do
-  Base64::decode('44GK5YmN44Gv44Gp44GT44Gu44Ov44Kr44Oh44GY44KD') == "お前はどこのワカメじゃ"
+  assert_equal "お前はどこのワカメじゃ", Base64::decode('44GK5YmN44Gv44Gp44GT44Gu44Ov44Kr44Oh44GY44KD')
 end
 
 assert('Base64 decode null characters') do
-  Base64::decode('AGZvbw==') == "\000foo"
+  assert_equal "\000foo", Base64::decode('AGZvbw==')
 end
