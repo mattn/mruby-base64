@@ -20,7 +20,7 @@ const char* base64_chars =
     ((unsigned char)c == '\n') || \
     ((unsigned char)c == '\r'))
 
-unsigned char*
+static unsigned char*
 base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len, unsigned int *out_len) {
   int i = 0;
   int j = 0;
@@ -65,7 +65,7 @@ base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len, unsigne
   return top;
 }
 
-unsigned char*
+static unsigned char*
 base64_decode(unsigned char const* bytes_to_decode, unsigned int in_len, unsigned int *out_len) {
   int i = 0;
   int j = 0;
