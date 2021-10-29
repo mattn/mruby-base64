@@ -27,7 +27,7 @@ base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len, unsigne
   unsigned char char_array_3[3] = {0};
   unsigned char char_array_4[4] = {0};
 
-  unsigned char* p = malloc(in_len * 3 + 1);
+  unsigned char* p = malloc((in_len + 2) / 3 * 4 + 1);
   unsigned char* top = p;
   *out_len = 0;
   while (in_len--) {
@@ -73,7 +73,7 @@ base64_decode(unsigned char const* bytes_to_decode, unsigned int in_len, unsigne
   unsigned char char_array_4[4] = {0};
   unsigned char char_array_3[3] = {0};
 
-  unsigned char* p = malloc(in_len * 3 + 1);
+  unsigned char* p = malloc((in_len + 3) / 4 * 3 + 1);
   unsigned char* top = p;
   *out_len = 0;
   while (in_len-- && ( bytes_to_decode[in_] != '=') && (is_base64(bytes_to_decode[in_]) || is_newline(bytes_to_decode[in_]))) {
